@@ -1,586 +1,109 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lucas Decorator — Make Your Day Memorable With Us</title>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Lucas Decorator – Event & Wedding Planning</title>
   <style>
-    /* --- Modern White Theme --- */
-    :root{
-      --accent: #0b5fff; /* gentle blue accent */
-      --muted: #6b7280;
-      --card-bg: #ffffff;
-      --shadow: 0 8px 24px rgba(16,24,40,0.08);
-    }
+    body { margin: 0; font-family: Arial, sans-serif; background: #f7f7fb; color: #222; }
+    header { background: #fff; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: space-between; }
+    .logo { font-size: 24px; font-weight: bold; color: #0b5fff; }
+    nav a { margin: 0 12px; text-decoration: none; color: #222; font-weight: 600; }
+    .hero { padding: 60px 20px; text-align: center; background: #ffffff; }
+    .hero h1 { font-size: 40px; margin-bottom: 10px; }
+    .hero p { color: #555; font-size: 18px; }
 
-    html,body{height:100%;}
-    body{
-      margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;background:#f7f7fb;color:#111;
-      -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
-    }
+    .section { max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+    .services-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+    .service-card { background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 6px 20px rgba(0,0,0,0.05); text-align: center; }
 
-    /* background videos (sliding) */
-    #videoWrap{position:fixed;inset:0;z-index:-2;overflow:hidden}
-    #bgVideo{width:100%;height:100%;object-fit:cover;opacity:0.4}
+    .venue-list { list-style: none; padding: 0; }
+    .venue-list li { background: #fff; margin-bottom: 12px; padding: 16px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.04); }
 
-    /* soft white overlay to make text pop */
-    .overlay{position:fixed;inset:0;background:rgba(255,255,255,0.6);z-index:-1}
+    .gallery { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; }
+    .gallery img { width: 100%; height: 180px; object-fit: cover; border-radius: 8px; }
 
-    header{max-width:1200px;margin:0 auto;padding:36px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:14px}
+    .cta-button { background: #0b5fff; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
 
-    /* LD logo */
-    .logo{width:64px;height:64px;display:flex;align-items:center;justify-content:center;background:linear-gradient(135deg,var(--accent),#00b4ff);border-radius:12px;box-shadow:var(--shadow);}
-    .logo svg{width:34px;height:34px;filter:drop-shadow(0 4px 12px rgba(11,95,255,0.18))}
-
-    nav{display:flex;gap:18px;align-items:center}
-    nav a{color:#111;text-decoration:none;font-weight:600}
-    .cta{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none;box-shadow:0 8px 20px rgba(11,95,255,0.12)}
-
-    /* HERO */
-    .hero{max-width:1100px;margin:10px auto 30px;padding:40px 20px;display:grid;grid-template-columns:1fr 420px;gap:28px;align-items:center}
-    .hero-left{padding:30px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.85));border-radius:14px;box-shadow:var(--shadow)}
-    .eyebrow{color:var(--muted);font-weight:600;margin-bottom:10px}
-    .hero-title{font-size:38px;line-height:1.02;margin:6px 0 12px;font-weight:800;color:#06203b}
-    .hero-sub{color:var(--muted);margin-bottom:18px}
-
-    /* animated emphasis on 'Memorable' */
-    .highlight{color:var(--accent);}
-
-    /* small features */
-    .feature-list{display:flex;gap:10px;flex-wrap:wrap}
-    .feature{background:#fff;border-radius:10px;padding:10px 12px;font-weight:600;color:#334155;box-shadow:0 6px 18px rgba(16,24,40,0.06)}
-
-    /* hero right area: quick booking + search */
-    .hero-right{display:flex;flex-direction:column;gap:12px}
-    .search-card{background:var(--card-bg);padding:14px;border-radius:12px;box-shadow:var(--shadow)}
-    .search-row{display:flex;gap:10px}
-    input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;font-size:15px}
-    button.primary{background:var(--accent);color:#fff;padding:10px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
-
-    /* content sections */
-    main{max-width:1100px;margin:0 auto;padding:24px}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
-    .card{background:var(--card-bg);border-radius:12px;padding:16px;box-shadow:var(--shadow)}
-    .card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
-
-    /* gallery grid */
-    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-    .gallery-grid img{width:100%;height:200px;object-fit:cover;border-radius:10px}
-
-    /* testimonials */
-    .testimonials{display:flex;gap:16px;margin-top:20px}
-    .testimonial{background:#fff;padding:16px;border-radius:10px;box-shadow:var(--shadow);flex:1}
-
-    /* portfolio & booking pages (single-page nav) */
-    .page{display:none}
-    .page.active{display:block}
-
-    /* footer */
-    footer{max-width:1100px;margin:30px auto;padding:24px;text-align:center;color:var(--muted)}
-
-    /* floating actions */
-    .whatsapp{position:fixed;right:22px;bottom:22px;background:#25D366;color:#fff;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;z-index:60;box-shadow:0 8px 30px rgba(37,211,102,0.18)}
-    .callback-fab{position:fixed;right:92px;bottom:22px;background:var(--accent);color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 8px 30px rgba(11,95,255,0.16);z-index:60}
-
-    /* popup form */
-    .popup{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.9);width:400px;max-width:92%;background:linear-gradient(180deg,#fff,#fbfdff);border-radius:14px;padding:20px;box-shadow:0 30px 80px rgba(2,6,23,0.12);z-index:100;opacity:0;pointer-events:none;transition:0.28s ease}
-    .popup.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
-    .popup input,.popup select{width:100%;padding:10px;border-radius:8px;border:1px solid #e6e9ef;margin-top:8px}
-    .popup button{margin-top:12px;padding:10px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer}
-
-    /* responsive */
-    @media (max-width:980px){
-      .hero{grid-template-columns:1fr;}
-      .cards{grid-template-columns:repeat(2,1fr)}
-      .gallery-grid{grid-template-columns:repeat(2,1fr)}
-      .testimonials{flex-direction:column}
-      header{padding:18px}
-    }
-
-    @media (max-width:560px){
-      .cards{grid-template-columns:1fr}
-      .gallery-grid{grid-template-columns:1fr}
-    }
+    footer { text-align: center; padding: 20px; color: #777; font-size: 14px; }
   </style>
 </head>
 <body>
 
-<!-- Video wrapper: we'll change the source with JS to slide different videos -->
-<div id="videoWrap"><video id="bgVideo" autoplay muted loop playsinline src="https://cdn.coverr.co/videos/coverr-wedding-lights-8574/1080p.mp4"></video></div>
-<div class="overlay"></div>
+  <header>
+    <div class="logo">Lucas Decorator</div>
+    <nav>
+      <a href="#home">Home</a>
+      <a href="#venues">Venues</a>
+      <a href="#portfolio">Portfolio</a>
+      <a href="#book">Book Now</a>
+    </nav>
+  </header>
 
-<header>
-  <div class="brand">
-    <div class="logo" title="Lucas Decorator">
-      <!-- minimal LD logo svg -->
-      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <rect x="0" y="0" width="64" height="64" rx="12" fill="white" opacity="0.02"></rect>
-        <text x="50%" y="55%" text-anchor="middle" font-family="Arial" font-weight="700" font-size="28" fill="white">LD</text>
-      </svg>
-    </div>
-    <div>
-      <div style="font-weight:800;font-size:18px;color:#06203b;">Lucas Decorator</div>
-      <div style="font-size:12px;color:var(--muted);margin-top:2px">Make Your Day <span class="highlight">Memorable</span> With Us</div>
-    </div>
-  </div>
-
-  <nav>
-    <a href="#" data-nav="home" class="navlink">Home</a>
-    <a href="#" data-nav="portfolio" class="navlink">Portfolio</a>
-    <a href="#" data-nav="book" class="navlink">Book Now</a>
-    <a class="cta" href="tel:123455678">Call 123455678</a>
-  </nav>
-</header>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-left">
-    <div class="eyebrow">Premium Event Design</div>
-    <h1 class="hero-title">Make Your Day <span class="highlight">Memorable</span> With Us</h1>
-    <p class="hero-sub">Modern, clean designs for weddings, birthdays, baby showers and college fests. We keep things simple and delightful.</p>
-
-    <div class="feature-list">
-      <div class="feature">Personalised Themes</div>
-      <div class="feature">Trusted Vendors</div>
-      <div class="feature">On-time Delivery</div>
-    </div>
-
-    <div class="testimonials" style="margin-top:18px">
-      <div class="testimonial">
-        <strong>Riya S.</strong>
-        <p style="margin-top:8px;color:var(--muted)">"Beautiful decor. Everything went smoothly."</p>
-      </div>
-      <div class="testimonial">
-        <strong>Amit &amp; Sneha</strong>
-        <p style="margin-top:8px;color:var(--muted)">"The wedding stage looked magical. Highly recommend."</p>
-      </div>
-    </div>
-  </div>
-
-  <div class="hero-right">
-    <div class="search-card">
-      <div style="font-weight:700;margin-bottom:8px">Quick Search</div>
-      <div class="search-row">
-        <input id="qLocation" placeholder="City or Mall" />
-      </div>
-      <div style="margin-top:8px">
-        <select id="qType"><option value="">Select event type</option><option>Wedding</option><option>Birthday</option><option>Baby Shower</option><option>College Fest</option></select>
-      </div>
-      <div style="margin-top:12px;display:flex;gap:8px">
-        <button class="primary" id="searchBtn">Search</button>
-        <button class="primary" style="background:#fff;color:var(--accent);border:1px solid #e6e9ef" id="viewPortfolio">View</button>
-      </div>
-    </div>
-
-    <div style="text-align:center;margin-top:12px;font-size:14px;color:var(--muted)">Or request a quick callback</div>
-    <div style="display:flex;gap:10px;margin-top:10px">
-      <button class="primary" style="flex:1" onclick="openPopup()">Request Callback</button>
-      <a class="cta" style="align-self:center" href="https://wa.me/123455678" target="_blank">WhatsApp</a>
-    </div>
-  </div>
-</div>
-
-<main>
-  <!-- sections that can be shown/hidden for SPA-like feel -->
-  <section id="page-home" class="page active">
-    <h2 style="color:#06203b">Our Services</h2>
-    <div class="cards">
-      <div class="card"><img src="https://source.unsplash.com/collection/190727/800x600" alt="wedding"><h4 style="margin-top:10px;color:#06203b">Weddings</h4><p style="color:var(--muted)">Full wedding planning & decor.</p></div>
-      <div class="card"><img src="https://source.unsplash.com/featured/?birthday-party" alt="birthday"><h4 style="margin-top:10px;color:#06203b">Birthdays</h4><p style="color:var(--muted)">Custom themes for all ages.</p></div>
-      <div class="card"><img src="https://source.unsplash.com/featured/?baby-shower" alt="baby"><h4 style="margin-top:10px;color:#06203b">Baby Showers</h4><p style="color:var(--muted)">Soft decor and intimate setups.</p></div>
-    </div>
-
-    <h2 style="margin-top:28px;color:#06203b">Gallery</h2>
-    <div class="gallery-grid">
-      <img src="https://source.unsplash.com/featured/?wedding-decor" alt="">
-      <img src="https://source.unsplash.com/featured/?wedding-stage" alt="">
-      <img src="https://source.unsplash.com/featured/?indian-wedding" alt="">
-      <img src="https://source.unsplash.com/featured/?baby-shower-decoration" alt="">
-      <img src="https://source.unsplash.com/featured/?birthday-decoration" alt="">
-      <img src="https://source.unsplash.com/featured/?college-festival" alt="">
-    </div>
+  <section id="home" class="hero">
+    <h1>One-Stop Event & Wedding Planning</h1>
+    <p>Discover premium venues, trusted vendors, and personalized decor — all in one place.</p>
+    <button class="cta-button" onclick="scrollToSection('book')">Plan With Us</button>
   </section>
 
-  <section id="page-portfolio" class="page">
-    <h2 style="color:#06203b">Portfolio</h2>
-    <p style="color:var(--muted)">Selected events and setups. Click any image to view larger.</p>
-    <div class="gallery-grid" id="portfolioGrid">
-      <!-- more portfolio images -->
-      <img src="https://source.unsplash.com/featured/?mandap" alt="">
-      <img src="https://source.unsplash.com/featured/?stage-decor" alt="">
-      <img src="https://source.unsplash.com/featured/?party-decor" alt="">
-      <img src="https://source.unsplash.com/featured/?balloon-decor" alt="">
-      <img src="https://source.unsplash.com/featured/?fest-lighting" alt="">
-      <img src="https://source.unsplash.com/featured/?reception-hall" alt="">
-    </div>
-  </section>
-
-  <section id="page-book" class="page">
-    <h2 style="color:#06203b">Book Now</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
-      <div><label style="font-weight:700;color:#06203b">Name</label><input id="bkName" placeholder="Your name"></div>
-      <div><label style="font-weight:700;color:#06203b">Phone</label><input id="bkPhone" placeholder="Phone number"></div>
-      <div style="grid-column:1/3"><label style="font-weight:700;color:#06203b">Location</label><input id="bkLoc" placeholder="City or venue"></div>
-      <div><label style="font-weight:700;color:#06203b">Date</label><input id="bkDate" type="date"></div>
-      <div><label style="font-weight:700;color:#06203b">Event Type</label><select id="bkType"><option>Wedding</option><option>Birthday</option><option>Baby Shower</option><option>College Fest</option></select></div>
-      <div><label style="font-weight:700;color:#06203b">Guests</label><input id="bkGuests" type="number" placeholder="Estimated number"></div>
-    </div>
-    <div style="margin-top:12px"><button class="primary" id="submitBooking">Submit Booking</button></div>
-    <p id="bookingMsg" style="color:var(--muted);margin-top:8px"></p>
-  </section>
-</main>
-
-<footer>
-  © 2025 Lucas Decorator — All rights reserved.
-</footer>
-
-<!-- floating actions -->
-<a class="whatsapp" href="https://wa.me/123455678" target="_blank" title="Chat on WhatsApp">💬</a>
-<button class="callback-fab" onclick="openPopup()">Request Callback</button>
-
-<!-- small popup form -->
-<div id="popup" class="popup" role="dialog" aria-hidden="true">
-  <h3 style="margin:0;color:#06203b">Request a Callback</h3>
-  <input id="pName" placeholder="Name">
-  <input id="pPhone" placeholder="Phone">
-  <input id="pLocation" placeholder="Location">
-  <input id="pDate" type="date">
-  <select id="pType"><option>Event Type</option><option>Wedding</option><option>Birthday</option><option>Baby Shower</option><option>College Fest</option></select>
-  <input id="pGuests" type="number" placeholder="Estimated guests">
-  <button onclick="submitCallback()">Submit</button>
-</div>
-
-<script>
-  // --- simple single-page navigation ---
-  document.querySelectorAll('.navlink').forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault();
-    const to = a.dataset.nav || e.target.dataset.nav;
-    showPage(to);
-  }));
-
-  function showPage(id){
-    document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
-    const el = document.getElementById('page-'+id);
-    if(el) el.classList.add('active');
-    window.scrollTo({top:0,behavior:'smooth'});
-  }
-
-  // wire View button to portfolio
-  document.getElementById('viewPortfolio').addEventListener('click',()=>showPage('portfolio'));
-
-  // --- video slider: list of video URLs ---
-  const videos = [
-    'https://cdn.coverr.co/videos/coverr-wedding-lights-8574/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-party-time-8547/1080p.mp4',
-    'https://cdn.coverr.co/videos/coverr-concert-night-9001/1080p.mp4'
-  ];
-  let vidIndex = 0;
-  const bg = document.getElementById('bgVideo');
-  setInterval(()=>{
-    vidIndex = (vidIndex+1) % videos.length;
-    // smooth transition by fading out/in
-    bg.style.transition = 'opacity 0.6s ease';
-    bg.style.opacity = 0;
-    setTimeout(()=>{
-      bg.src = videos[vidIndex];
-      bg.play().catch(()=>{});
-      bg.style.opacity = 0.4;
-    },650);
-  },8000);
-
-  // --- popup open/close ---
-  const popup = document.getElementById('popup');
-  function openPopup(){popup.classList.add('open');popup.setAttribute('aria-hidden','false')}
-  function closePopup(){popup.classList.remove('open');popup.setAttribute('aria-hidden','true')}
-
-  // close when clicking outside
-  window.addEventListener('click',e=>{if(e.target===popup){closePopup()}});
-
-  // Submit callback (basic) — replace with actual API to store data
-  function submitCallback(){
-    const data = {
-      name:document.getElementById('pName').value,
-      phone:document.getElementById('pPhone').value,
-      location:document.getElementById('pLocation').value,
-      date:document.getElementById('pDate').value,
-      type:document.getElementById('pType').value,
-      guests:document.getElementById('pGuests').value
-    };
-    // simple validation
-    if(!data.name||!data.phone){alert('Please add name and phone');return}
-    // show success and close
-    alert('Thanks. We will call you shortly.');
-    closePopup();
-  }
-
-  // Booking form handler
-  document.getElementById('submitBooking').addEventListener('click',()=>{
-    const out = {
-      name:document.getElementById('bkName').value,
-      phone:document.getElementById('bkPhone').value,
-      loc:document.getElementById('bkLoc').value,
-      date:document.getElementById('bkDate').value,
-      type:document.getElementById('bkType').value,
-      guests:document.getElementById('bkGuests').value
-    };
-    if(!out.name||!out.phone){document.getElementById('bookingMsg').innerText='Name and phone are required.';return}
-    document.getElementById('bookingMsg').innerText='Booking request submitted. We will contact you.';
-    // clear form
-    ['bkName','bkPhone','bkLoc','bkDate','bkType','bkGuests'].forEach(id=>document.getElementById(id).value='');
-  });
-
-  // Quick search (demo)
-  document.getElementById('searchBtn').addEventListener('click',()=>{
-    const loc=document.getElementById('qLocation').value;const t=document.getElementById('qType').value;
-    if(!loc||!t){alert('Enter location and event type');return}
-    alert('Showing results for '+t+' in '+loc);
-  });
-
-  // initial nav to home
-  showPage('home');
-</script>
-
-</body>
-<!-- Final Polished Website - ready for deployment -->
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Lucas Decorator — Make Your Day Memorable With Us</title>
-  <meta name="description" content="Lucas Decorator - wedding & event design. Weddings, birthdays, baby showers, college fests. Premium event décor and planning." />
-  <style>
-    :root{--accent:#0b5fff;--muted:#6b7280;--card:#ffffff;--glass:rgba(255,255,255,0.6);--shadow:0 10px 30px rgba(16,24,40,0.08)}
-    html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;background:#f7f7fb;color:#0b1220}
-    /* video background */
-    #videoWrap{position:fixed;inset:0;z-index:-3;overflow:hidden}
-    #bgVideo{width:100%;height:100%;object-fit:cover;opacity:0.4}
-    .overlay{position:fixed;inset:0;background:linear-gradient(180deg,rgba(255,255,255,0.65),rgba(255,255,255,0.75));z-index:-2}
-
-    header{max-width:1200px;margin:0 auto;padding:28px 20px;display:flex;align-items:center;justify-content:space-between}
-    .brand{display:flex;align-items:center;gap:14px}
-
-    /* Circular badge LD */
-    .logo-wrap{width:68px;height:68px;border-radius:50%;background:linear-gradient(135deg,var(--accent),#00b4ff);display:flex;align-items:center;justify-content:center;box-shadow:var(--shadow)}
-    .logo-wrap svg{width:34px;height:34px;color:#fff}
-
-    .brand-title{line-height:1}
-    .brand-title .name{font-weight:800;color:#071033;font-size:18px}
-    .brand-title .tag{font-size:12px;color:var(--muted)}
-
-    nav{display:flex;gap:16px;align-items:center}
-    nav a{color:#071033;text-decoration:none;font-weight:600}
-    .cta{background:var(--accent);color:#fff;padding:10px 14px;border-radius:10px;text-decoration:none}
-
-    /* HERO */
-    .hero{max-width:1100px;margin:14px auto;padding:28px 20px;display:grid;grid-template-columns:1fr 420px;gap:24px;align-items:start}
-    .hero-card{background:var(--card);border-radius:14px;padding:28px;box-shadow:var(--shadow)}
-    .eyebrow{color:var(--muted);font-weight:700;margin-bottom:8px}
-    .title{font-size:38px;line-height:1.02;margin:8px 0 12px;font-weight:800;color:#071033}
-    .title .highlight{color:var(--accent)}
-    .sub{color:var(--muted);margin-bottom:18px}
-    .features{display:flex;gap:10px;flex-wrap:wrap}
-    .feat{background:#fff;padding:8px 12px;border-radius:10px;font-weight:700;color:#334155;box-shadow:0 6px 18px rgba(16,24,40,0.04)}
-
-    /* right card */
-    .search-card{background:linear-gradient(180deg,#fff,#fbfdff);padding:16px;border-radius:12px;box-shadow:var(--shadow)}
-    input,select,textarea{width:100%;padding:12px;border-radius:10px;border:1px solid #e9eef7;font-size:15px}
-    button.primary{background:var(--accent);color:#fff;padding:12px;border-radius:10px;border:none;font-weight:700;cursor:pointer}
-    button.ghost{background:#fff;color:var(--accent);border:1px solid #e9eef7}
-
-    main{max-width:1100px;margin:0 auto;padding:24px}
-    .cards{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-top:20px}
-    .card{background:var(--card);border-radius:12px;padding:12px;box-shadow:var(--shadow);overflow:hidden}
-    .card img{width:100%;height:160px;object-fit:cover;border-radius:8px}
-    .card h4{margin:10px 0 6px;color:#071033}
-    .muted{color:var(--muted)}
-
-    .gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:18px}
-    .gallery-grid img{width:100%;height:200px;object-fit:cover;border-radius:10px}
-
-    .testimonials{display:flex;gap:16px;margin-top:20px;flex-wrap:wrap}
-    .testimonial{background:#fff;padding:16px;border-radius:10px;box-shadow:var(--shadow);flex:1;min-width:260px}
-
-    /* Pages */
-    .page{display:none}
-    .page.active{display:block}
-
-    footer{max-width:1100px;margin:36px auto;padding:24px;text-align:center;color:var(--muted)}
-
-    .whatsapp{position:fixed;right:22px;bottom:22px;background:#25D366;color:#fff;border-radius:50%;width:56px;height:56px;display:flex;align-items:center;justify-content:center;z-index:60;box-shadow:0 8px 30px rgba(37,211,102,0.18)}
-    .callback-fab{position:fixed;right:96px;bottom:22px;background:var(--accent);color:#fff;padding:12px 14px;border-radius:14px;box-shadow:0 8px 30px rgba(11,95,255,0.12);z-index:60}
-
-    .popup{position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(0.96);width:420px;max-width:94%;background:linear-gradient(180deg,#fff,#fbfdff);border-radius:14px;padding:20px;box-shadow:0 30px 80px rgba(2,6,23,0.12);z-index:100;opacity:0;pointer-events:none;transition:0.28s}
-    .popup.open{opacity:1;pointer-events:auto;transform:translate(-50%,-50%) scale(1)}
-    .popup input,.popup select{width:100%;padding:10px;border-radius:8px;border:1px solid #e9eef7;margin-top:8px}
-    .popup button{margin-top:12px;padding:12px;border-radius:10px;border:none;background:var(--accent);color:white;cursor:pointer}
-
-    /* responsiveness */
-    @media (max-width:980px){.hero{grid-template-columns:1fr}.cards{grid-template-columns:repeat(2,1fr)}.gallery-grid{grid-template-columns:repeat(2,1fr)}.testimonials{flex-direction:column}header{padding:18px}}
-    @media (max-width:560px){.cards{grid-template-columns:1fr}.gallery-grid{grid-template-columns:1fr}.brand-title .name{font-size:16px}}
-
-    /* subtle animations */
-    body{opacity:0;animation:pageIn 0.8s forwards}
-    @keyframes pageIn{to{opacity:1}}
-    .slides{transition:opacity 0.6s ease}
-  </style>
-</head>
-<body>
-
-<div id="videoWrap"><video id="bgVideo" autoplay muted loop playsinline src="https://cdn.coverr.co/videos/coverr-wedding-lights-8574/1080p.mp4"></video></div>
-<div class="overlay"></div>
-
-<header>
-  <div class="brand">
-    <div class="logo-wrap" aria-hidden="true">
-      <svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <circle cx="32" cy="32" r="30" fill="rgba(255,255,255,0.06)"></circle>
-        <text x="50%" y="55%" text-anchor="middle" font-family="Georgia,serif" font-weight="700" font-size="22" fill="#fff">LD</text>
-      </svg>
-    </div>
-    <div class="brand-title">
-      <div class="name">Lucas Decorator</div>
-      <div class="tag">Make Your Day <span style="color:var(--accent)">Memorable</span> With Us</div>
-    </div>
-  </div>
-
-  <nav>
-    <a href="#" data-nav="home" class="navlink">Home</a>
-    <a href="#" data-nav="portfolio" class="navlink">Portfolio</a>
-    <a href="#" data-nav="book" class="navlink">Book Now</a>
-    <a class="cta" href="tel:123455678">Call 123455678</a>
-  </nav>
-</header>
-
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-card">
-    <div class="eyebrow">Premium Event Design</div>
-    <h1 class="title">Make Your Day <span class="highlight">Memorable</span> With Us</h1>
-    <p class="sub">Modern, clean designs for weddings, birthdays, baby showers and college fests. We keep things simple and delightful.</p>
-
-    <div class="features">
-      <div class="feat">Personalised Themes</div>
-      <div class="feat">Trusted Vendors</div>
-      <div class="feat">On-time Delivery</div>
-      <div class="feat">Transparent Pricing</div>
-    </div>
-
-    <div class="testimonials" style="margin-top:20px">
-      <div class="testimonial"><strong>Riya S.</strong><p class="muted">"The decor was beautiful and exactly what we wanted."</p></div>
-      <div class="testimonial"><strong>Amit &amp; Sneha</strong><p class="muted">"The wedding stage looked magical. Thank you!"</p></div>
-      <div class="testimonial"><strong>Nisha</strong><p class="muted">"Booked for a baby shower — soft, elegant, and on time."</p></div>
-    </div>
-  </div>
-
-  <div>
-    <div class="search-card">
-      <div style="font-weight:800;color:#071033;margin-bottom:8px">Quick Search & Book</div>
-      <input id="qLocation" placeholder="City or Mall" />
-      <div style="height:10px"></div>
-      <select id="qType"><option value="">Select event type</option><option>Wedding</option><option>Birthday</option><option>Baby Shower</option><option>College Fest</option></select>
-      <div style="height:12px"></div>
-      <div style="display:flex;gap:10px"><button class="primary" id="searchBtn">Search</button><button class="ghost" id="viewPortfolio">View</button></div>
-      <div style="margin-top:12px;text-align:center;color:var(--muted)">Or</div>
-      <div style="display:flex;gap:10px;margin-top:12px"><button class="primary" style="flex:1" onclick="openPopup()">Request Callback</button><a class="cta" href="https://wa.me/123455678" target="_blank">WhatsApp</a></div>
-    </div>
-  </div>
-</div>
-
-<main>
-  <section id="page-home" class="page active">
+  <section class="section" id="services">
     <h2>Our Services</h2>
-    <div class="cards">
-      <div class="card"><img src="https://images.unsplash.com/photo-1548355015-4b1c282a1a1f?auto=format&fit=crop&w=1000&q=80"><h4>Weddings</h4><p class="muted">Full wedding planning & decor.</p></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1556911073-52542e6e7f66?auto=format&fit=crop&w=1000&q=80"><h4>Birthdays</h4><p class="muted">Custom themes for any age.</p></div>
-      <div class="card"><img src="https://images.unsplash.com/photo-1537633552985-df8429e8048b?auto=format&fit=crop&w=1000&q=80"><h4>Baby Showers</h4><p class="muted">Soft decor and intimate setups.</p></div>
-    </div>
-
-    <h2 style="margin-top:28px">Gallery</h2>
-    <div class="gallery-grid">
-      <img src="https://images.unsplash.com/photo-1529634806980-24bc4c5443fd?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1542843139-a5efa8a0b2bd?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1493863649630-842dd7bec0e6?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1501594907352-04cda38ebc29?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1521335629791-ce4aec67dd47?auto=format&fit=crop&w=1000&q=80">
+    <div class="services-grid">
+      <div class="service-card">Venue Shortlisting</div>
+      <div class="service-card">Decor & Theme Design</div>
+      <div class="service-card">Photography & Videography</div>
+      <div class="service-card">Make-up / Mehendi</div>
+      <div class="service-card">Event Management</div>
+      <div class="service-card">Guest Coordination</div>
     </div>
   </section>
 
-  <section id="page-portfolio" class="page">
+  <section class="section" id="venues">
+    <h2>Featured Venues</h2>
+    <ul class="venue-list">
+      <li>Lux Banquet Hall, Mumbai</li>
+      <li>Royal Gardens Lawn, Pune</li>
+      <li>Heritage Palace, Jaipur</li>
+    </ul>
+  </section>
+
+  <section class="section" id="portfolio">
     <h2>Portfolio</h2>
-    <p class="muted">Selected events and setups. Click to enlarge.</p>
-    <div class="gallery-grid">
-      <img src="https://images.unsplash.com/photo-1504196606672-aef5c9cefc92?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1529692236671-f1dc028cdb35?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1604328698692-e5f3ed316ec1?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1518893069760-1f8f7e5b99a2?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1526045612212-70caf35c14df?auto=format&fit=crop&w=1000&q=80">
-      <img src="https://images.unsplash.com/photo-1460644212565-a64ce8ae90cb?auto=format&fit=crop&w=1000&q=80">
+    <div class="gallery">
+      <img src="https://source.unsplash.com/featured/?wedding-stage" alt="Wedding Decor">
+      <img src="https://source.unsplash.com/featured/?birthday-party" alt="Birthday Party">
+      <img src="https://source.unsplash.com/featured/?baby-shower" alt="Baby Shower">
+      <img src="https://source.unsplash.com/featured/?event-lighting" alt="Event Lighting">
+      <img src="https://source.unsplash.com/featured/?college-festival" alt="College Fest">
     </div>
   </section>
 
-  <section id="page-book" class="page">
-    <h2>Book Now</h2>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px">
-      <div><label style="font-weight:700;color:#071033">Name</label><input id="bkName" placeholder="Your name"></div>
-      <div><label style="font-weight:700;color:#071033">Phone</label><input id="bkPhone" placeholder="Phone number"></div>
-      <div style="grid-column:1/3"><label style="font-weight:700;color:#071033">Location</label><input id="bkLoc" placeholder="City or venue"></div>
-      <div><label style="font-weight:700;color:#071033">Date</label><input id="bkDate" type="date"></div>
-      <div><label style="font-weight:700;color:#071033">Event Type</label><select id="bkType"><option>Wedding</option><option>Birthday</option><option>Baby Shower</option><option>College Fest</option></select></div>
-      <div><label style="font-weight:700;color:#071033">Guests</label><input id="bkGuests" type="number" placeholder="Estimated number"></div>
-    </div>
-    <div style="margin-top:12px"><button class="primary" id="submitBooking">Submit Booking</button></div>
-    <p id="bookingMsg" class="muted" style="margin-top:8px"></p>
+  <section class="section" id="book">
+    <h2>Get in Touch</h2>
+    <form onsubmit="submitBooking(event)">
+      <input type="text" name="name" placeholder="Your Name" required /><br /><br />
+      <input type="tel" name="phone" placeholder="Phone Number" required /><br /><br />
+      <input type="text" name="eventType" placeholder="Event Type (Wedding / Birthday...)" required /><br /><br />
+      <textarea name="details" placeholder="Your requirements (venue, decor, date)"></textarea><br /><br />
+      <button class="cta-button" type="submit">Request Quote</button>
+    </form>
   </section>
-</main>
 
-<footer>© 2025 Lucas Decorator — All rights reserved.</footer>
+  <footer>
+    &copy; 2025 Lucas Decorator — All rights reserved.
+  </footer>
 
-<a class="whatsapp" href="https://wa.me/123455678" target="_blank" title="Chat on WhatsApp">💬</a>
-<button class="callback-fab" onclick="openPopup()">Request Callback</button>
+  <script>
+    function scrollToSection(id) {
+      document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+    }
 
-<div id="popup" class="popup" role="dialog" aria-hidden="true">
-  <h3 style="margin:0;color:#071033">Request a Callback</h3>
-  <input id="pName" placeholder="Name">
-  <input id="pPhone" placeholder="Phone">
-  <input id="pLocation" placeholder="Location">
-  <input id="pDate" type="date">
-  <select id="pType"><option>Event Type</option><option>Wedding</option><option>Birthday</option><option>Baby Shower</option><option>College Fest</option></select>
-  <input id="pGuests" type="number" placeholder="Estimated guests">
-  <button onclick="submitCallback()">Submit</button>
-</div>
-
-<script>
-  // navigation
-  document.querySelectorAll('.navlink').forEach(a=>a.addEventListener('click',e=>{
-    e.preventDefault();const to=a.dataset.nav||e.target.dataset.nav;showPage(to);
-  }));
-  function showPage(id){document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));const el=document.getElementById('page-'+id);if(el)el.classList.add('active');window.scrollTo({top:0,behavior:'smooth'})}
-  document.getElementById('viewPortfolio').addEventListener('click',()=>showPage('portfolio'));
-
-  // video slider
-  const videos=['https://cdn.coverr.co/videos/coverr-wedding-lights-8574/1080p.mp4','https://cdn.coverr.co/videos/coverr-party-time-8547/1080p.mp4','https://cdn.coverr.co/videos/coverr-concert-night-9001/1080p.mp4'];let vidIndex=0;const bg=document.getElementById('bgVideo');setInterval(()=>{vidIndex=(vidIndex+1)%videos.length;bg.style.transition='opacity 0.6s ease';bg.style.opacity=0;setTimeout(()=>{bg.src=videos[vidIndex];bg.play().catch(()=>{});bg.style.opacity=0.4},650)},8000);
-
-  // popup
-  const popup=document.getElementById('popup');function openPopup(){popup.classList.add('open');popup.setAttribute('aria-hidden','false')}function closePopup(){popup.classList.remove('open');popup.setAttribute('aria-hidden','true')}
-  window.addEventListener('click',e=>{if(e.target===popup)closePopup()});
-
-  function submitCallback(){const data={name:document.getElementById('pName').value,phone:document.getElementById('pPhone').value,location:document.getElementById('pLocation').value,date:document.getElementById('pDate').value,type:document.getElementById('pType').value,guests:document.getElementById('pGuests').value};if(!data.name||!data.phone){alert('Please add name and phone');return}alert('Thanks. We will call you shortly.');closePopup();}
-
-  // booking
-  document.getElementById('submitBooking').addEventListener('click',()=>{const out={name:document.getElementById('bkName').value,phone:document.getElementById('bkPhone').value,loc:document.getElementById('bkLoc').value,date:document.getElementById('bkDate').value,type:document.getElementById('bkType').value,guests:document.getElementById('bkGuests').value};if(!out.name||!out.phone){document.getElementById('bookingMsg').innerText='Name and phone are required.';return}document.getElementById('bookingMsg').innerText='Booking request submitted. We will contact you.';['bkName','bkPhone','bkLoc','bkDate','bkType','bkGuests'].forEach(id=>document.getElementById(id).value='');});
-
-  // quick search
-  document.getElementById('searchBtn').addEventListener('click',()=>{const loc=document.getElementById('qLocation').value;const t=document.getElementById('qType').value;if(!loc||!t){alert('Enter location and event type');return}alert('Showing results for '+t+' in '+loc)});
-
-  // start on home
-  showPage('home');
-</script>
+    function submitBooking(e) {
+      e.preventDefault();
+      alert('Thank you! We have received your request and will contact you soon.');
+      // Here you can integrate with Google Sheets or email
+    }
+  </script>
 
 </body>
 </html>
-
-
