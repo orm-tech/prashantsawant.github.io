@@ -1,38 +1,204 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Your Event Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lucas Decorator | Event Studio</title>
+
   <style>
-    body { font-family: Arial; margin: 0; padding: 0; }
-    header { background: #111; color: white; padding: 40px; text-align: center; }
-    section { padding: 40px; max-width: 900px; margin: auto; }
-    h2 { margin-top: 0; }
-    .gallery img { width: 30%; margin: 1%; border-radius: 8px; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f5f5f5;
+    }
+
+    header {
+      background: #1e1e1e;
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 32px;
+    }
+
+    header p {
+      margin: 5px 0 0 0;
+      font-size: 18px;
+    }
+
+    .search-container {
+      max-width: 600px;
+      margin: 30px auto;
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    input, select, button {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 16px;
+      outline: none;
+    }
+
+    button {
+      background: #0078ff;
+      color: white;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    button:hover {
+      background: #005fcc;
+    }
+
+    #result {
+      margin-top: 20px;
+      font-size: 18px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    section {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      margin-bottom: 30px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.05);
+    }
+
+    h2 {
+      margin-top: 0;
+    }
+
+    .service-box {
+      margin-bottom: 30px;
+    }
+
+    .service-box img {
+      width: 100%;
+      max-height: 300px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-top: 10px;
+    }
+
+    .gallery {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    .gallery img {
+      width: 30%;
+      margin: 5px;
+      border-radius: 10px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 14px;
+      color: #666;
+    }
   </style>
 </head>
+
 <body>
+
   <header>
-    <h1>Welcome to Your Event Studio</h1>
-    <p>Birthday • Weddings • Corporate • Baby Shower</p>
+    <h1>Lucas Decorator</h1>
+    <p>Your Event Studio — Birthdays • Weddings • Baby Showers • More</p>
   </header>
+
+  <div class="search-container">
+    <form id="searchForm">
+      <div class="input-group">
+        <input 
+          type="text" 
+          id="location" 
+          placeholder="Enter your location (city or mall)"
+          required
+        />
+      </div>
+      <div class="input-group">
+        <select id="eventType" required>
+          <option value="">Select event type</option>
+          <option value="Birthday Party">Birthday Party</option>
+          <option value="Wedding">Wedding</option>
+          <option value="Baby Shower">Baby Shower</option>
+          <option value="Corporate Event">Corporate Event</option>
+        </select>
+      </div>
+      <button type="submit">Search Events</button>
+    </form>
+    <div id="result"></div>
+  </div>
 
   <section>
     <h2>Our Services</h2>
-    <p>We plan and execute all kinds of events, with attention to detail and customer satisfaction.</p>
+    <div class="service-box">
+      <h3>Weddings</h3>
+      <p>Elegant and culturally-rich wedding planning. From traditional rituals to modern celebrations, we make every wedding memorable.</p>
+      <img src="https://images.unsplash.com/photo-1548355015-4b1c282a1a1f" alt="Indian Wedding">
+    </div>
+    <div class="service-box">
+      <h3>Birthday Parties</h3>
+      <p>Fun, vibrant and customized birthday themes for kids and adults alike.</p>
+      <img src="https://images.unsplash.com/photo-1556911073-52542e6e7f66" alt="Birthday Party">
+    </div>
+    <div class="service-box">
+      <h3>Baby Showers</h3>
+      <p>Soft pastel themes, thoughtful decor, and an intimate celebration to welcome your little one.</p>
+      <img src="https://images.unsplash.com/photo-1611672585731-73d344d37dbc" alt="Baby Shower">
+    </div>
   </section>
 
   <section class="gallery">
     <h2>Gallery</h2>
-    <p>Add your event photos here.</p>
+    <img src="https://images.unsplash.com/photo-1529634806980-24bc4c5443fd" alt="Wedding Image">
+    <img src="https://images.unsplash.com/photo-1542843139-a5efa8a0b2bd" alt="Birthday Image">
+    <img src="https://images.unsplash.com/photo-1611672585731-73d344d37dbc" alt="Baby Shower Image">
+    <img src="https://images.unsplash.com/photo-1493863649630-842dd7bec0e6" alt="Event Decor">
+  </section>
+
+  <section>
+    <h2>Best in Town</h2>
+    <p>Lucas Decorator is proud to be recognized for delivering the best event planning and decor services in town. Whether it's weddings, birthdays or baby showers, our tailored themes, attention to detail, and creative vision make every event one-of-a-kind.</p>
   </section>
 
   <section>
     <h2>Contact Us</h2>
-    <p>Email: yourmail@gmail.com</p>
-    <p>Phone: 0000000000</p>
+    <p>Email: lucas.decorator@example.com</p>
+    <p>Phone: +91 98XXXXXXX</p>
   </section>
+
+  <footer>
+    &copy; Lucas Decorator. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById("searchForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      const location = document.getElementById("location").value.trim();
+      const eventType = document.getElementById("eventType").value;
+      const message = `Showing available ${eventType} services in ${location}`;
+      document.getElementById("result").innerText = message;
+    });
+  </script>
+
 </body>
 </html>
+
